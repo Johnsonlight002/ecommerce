@@ -1,0 +1,72 @@
+/* Default Light Mode */
+body {
+    background-color: #f8f9fa; /* Light background */
+    color: #333; /* Dark text */
+    font-family: Arial, sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Dark Mode */
+.dark body {
+    background-color: #121212; /* Dark background */
+    color: #e0e0e0; /* Light text */
+}
+
+/* Button Styling */
+button {
+    background-color: #007bff; /* Blue */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue */
+}
+
+/* Dark mode button styling */
+.dark button {
+    background-color: #444;
+}
+
+.dark button:hover {
+    background-color: #666;
+}
+
+/* Input Fields */
+input, select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background 0.3s, color 0.3s;
+}
+
+/* Dark Mode Input Fields */
+.dark input, .dark select {
+    background: #333;
+    color: white;
+    border: 1px solid #555;
+}
+
+/* Links */
+a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+/* Dark Mode Links */
+.dark a {
+    color: #80bdff;
+}
+
+.dark a:hover {
+    color: #3399ff;
+}

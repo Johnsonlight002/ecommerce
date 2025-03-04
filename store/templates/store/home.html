@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - MyShop{% endblock %}
+
+{% block content %}
+    <div class="text-center py-10">
+        <h1 class="text-4xl font-bold text-blue-700 dark:text-blue-300">Welcome to MyShop</h1>
+        <p class="text-gray-600 dark:text-gray-300 mt-2">Find the best products at the best prices.</p>
+        <input type="text" id="search" placeholder="Search products..." 
+               class="mt-4 p-2 border rounded w-1/2 dark:bg-gray-800 dark:text-white dark:border-gray-600">
+    </div>
+
+    <div class="flex justify-between items-center px-6">
+        <div>
+            <label for="sort" class="font-medium dark:text-gray-300">Sort by:</label>
+            <select id="sort" class="p-2 border rounded dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                <option value="price">Price</option>
+                <option value="name">Name</option>
+            </select>
+        </div>
+        <div>
+            <button id="toggle-theme" class="bg-gray-800 text-white p-2 rounded">Toggle Dark Mode</button>
+        </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-6 mt-6">
+        {% for product in products %}
+        <div class="bg-white dark:bg-gray-900 shadow-lg rounded-lg p-4 border hover:shadow-xl transition-all duration-300">
+
+            <h2 class="text-lg font-semibold mt-3 dark:text-gray-300">{{ product.name }}</h2>
+            <p class="text-green-600 font-bold text-xl">${{ product.price }}</p>
+            <p class="text-sm text-gray-500 mt-1">{{ product.description|truncatechars:80 }}</p>
+            <form action="{% url 'add_to_cart' product.id %}" method="POST" class="mt-3">
+                {% csrf_token %}
+                <label for="quantity_{{ product.id }}" class="block text-sm font-medium mt-2 dark:text-gray-300">Quantity:</label>
+                <select name="quantity" id="quantity_{{ product.id }}" 
+                        class="mt-1 p-2 border rounded w-full dark:bg-gray-800 dark:text-white dark:border-gray-600">
+                    {% for i in quantity_range %}
+                    <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" 
+                        class="mt-3 w-full bg-blue-600 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 transition">Add to Cart
+                </button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Shopping Cart -->
+    <div class="mt-10 px-6">
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-300">Your Cart</h2>
+        <div class="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-md mt-4">
+            {% if cart_items %}
+                <ul class="divide-y divide-gray-200 dark:divide-gray-700">
+                    {% for item in cart_items %}
+                    <li class="flex justify-between items-center py-4 dark:text-gray-300">
+                        <span class="text-lg">{{ item.name }} - ${{ item.price }} (x{{ item.quantity }})</span>
+                        <a href="{% url 'remove_from_cart' item.id %}" class="text-red-500 hover:text-red-700">Remove</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="mt-4 text-center">
+                    <a href="{% url 'checkout' %}" 
+                       class="bg-green-500 text-white font-bold py-3 px-6 rounded hover:bg-green-600 transition">Proceed to Checkout
+                    </a>
+                </div>
+            {% else %}
+                <p class="text-gray-600 dark:text-gray-400 text-center py-4">Your cart is empty.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Dark Mode Script -->
+     <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const root = document.documentElement;
+        const themeToggle = document.getElementById("toggle-theme");
+    
+        // Load theme from localStorage
+        if (localStorage.getItem("theme") === "dark") {
+            root.classList.add("dark");
+        }
+    
+        // Toggle theme on button click
+        themeToggle?.addEventListener("click", function () {
+            root.classList.toggle("dark");
+    
+            // Save theme preference
+            localStorage.setItem("theme", root.classList.contains("dark") ? "dark" : "light");
+        });
+    });
+</script>
+
+{% endblock %}

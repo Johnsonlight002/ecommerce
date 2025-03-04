@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+    <h1>Checkout Page</h1>
+    <p>Review your order before making a payment.</p>
+    <a href="{% url 'payment' %}" class="btn btn-success">Proceed to Payment</a>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const root = document.documentElement;
+            const themeToggle = document.getElementById("toggle-theme");
+        
+            // Load theme from localStorage
+            if (localStorage.getItem("theme") === "dark") {
+                root.classList.add("dark");
+            }
+        
+            // Toggle theme on button click
+            themeToggle?.addEventListener("click", function () {
+                root.classList.toggle("dark");
+        
+                // Save theme preference
+                localStorage.setItem("theme", root.classList.contains("dark") ? "dark" : "light");
+            });
+        });
+    </script>
+    
+{% endblock %}
